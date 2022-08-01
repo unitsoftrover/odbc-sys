@@ -330,6 +330,16 @@ pub struct SQL_SS_TIMESTAMPOFFSET_STRUCT {
     pub timezone_minute: SQLSMALLINT,
 }
 
+#[repr(C)]
+#[allow(non_camel_case_types)]
+#[derive(Debug, Default, PartialEq, Eq, Clone, Copy, Hash)]
+pub struct SQL_Numeric_STRUCT {
+    pub precision: u8,
+    pub scale: u8,
+    pub sign: u8,
+    pub val: [u8; 16],
+}
+
 /// Statement attributes for `SQLSetStmtAttr`
 #[repr(i32)]
 #[allow(non_camel_case_types)]
@@ -1015,6 +1025,48 @@ extern "system" {
         scale_ptr: *mut SQLSMALLINT,
         nullable_ptr: *mut Nullable,
     ) -> SQLRETURN;
+
+    pub fn SQLSetDescFieldW(
+        hdesc: SQLHDESC, 
+        rec_number: SQLSMALLINT, 
+        field_identifier: SQLSMALLINT, 
+        value: SQLPOINTER, 
+        buffer_length: SQLINTEGER
+    ) -> SQLRETURN;
+
+    pub fn SQLSetDescField(
+        hdesc: SQLHDESC, 
+        rec_number: SQLSMALLINT, 
+        field_identifier: SQLSMALLINT, 
+        value: SQLPOINTER, 
+        buffer_length: SQLINTEGER
+    ) -> SQLRETURN;
+
+    pub fn SQLSetDescRecW(  
+        DescriptorHandle : SQLHDESC,  
+        RecNumber : SQLSMALLINT,  
+        Type : SQLSMALLINT,  
+        SubType : SQLSMALLINT,  
+        Length : SQLLEN,  
+        Precision : SQLSMALLINT,  
+        Scale : SQLSMALLINT,  
+        DataPtr :SQLPOINTER,  
+        StringLengthPtr : *mut SQLLEN,  
+        IndicatorPtr : *mut SQLLEN      
+    )->SQLRETURN; 
+
+    pub fn SQLSetDescRec(  
+        DescriptorHandle : SQLHDESC,  
+        RecNumber : SQLSMALLINT,  
+        Type : SQLSMALLINT,  
+        SubType : SQLSMALLINT,  
+        Length : SQLLEN,  
+        Precision : SQLSMALLINT,  
+        Scale : SQLSMALLINT,  
+        DataPtr :SQLPOINTER,  
+        StringLengthPtr : *mut SQLLEN,  
+        IndicatorPtr : *mut SQLLEN      
+    )->SQLRETURN; 
 
     /// Returns a list of columns and associated privileges for the specified table.
     /// The driver returns the information as a result set on the specified StatementHandle.

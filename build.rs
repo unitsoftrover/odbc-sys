@@ -1,6 +1,7 @@
 fn main() {
     if std::env::var("CARGO_FEATURE_STATIC").is_ok() {
         if cfg!(target_os = "windows") {
+           
             panic!("odbc-sys does not currently support static linking on windows");
         }
         let static_path = std::env::var("ODBC_SYS_STATIC_PATH").unwrap_or("/usr/lib".to_string());
